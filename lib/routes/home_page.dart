@@ -9,7 +9,8 @@ class TimePickerPage extends StatefulWidget {
 }
 
 class _TimePickerPageState extends State<TimePickerPage> {
-  DateTime _selectedDateTime = DateTime.now();
+  DateTime _selectedStartDateTime = DateTime.now();
+  DateTime _selectedEndtDateTime = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +21,8 @@ class _TimePickerPageState extends State<TimePickerPage> {
         context,
         minDateTime: DateTime.parse("2019-05-15 09:23:10"),
         maxDateTime: DateTime.parse("2020-06-03 21:11:00"),
-        initialDateTime: DateTime.parse(formatDate(_selectedDateTime, [yyyy, "-", mm, "-", "dd", " ", HH, ":", nn, ":", ss])),
-        dateFormat: "yy-MM-dd    HH:mm",
+        initialDateTime: DateTime.parse(formatDate(_selectedStartDateTime, [yyyy, "-", mm, "-", "dd", " ", HH, ":", nn, ":", ss])),
+        dateFormat: "yyyy - MM - dd    HH : mm",
         locale: DateTimePickerLocale.en_us,
         pickerTheme: DateTimePickerTheme(
           showTitle: true,
@@ -32,12 +33,12 @@ class _TimePickerPageState extends State<TimePickerPage> {
         },
         onChange: (dateTime, List<int> index) {
           setState(() {
-            _selectedDateTime = dateTime;
+            _selectedStartDateTime = dateTime;
           });
         },
         onConfirm: (dateTime, List<int> index) {
           setState(() {
-            _selectedDateTime = dateTime;
+            _selectedStartDateTime = dateTime;
           });
         },
       );
@@ -48,8 +49,8 @@ class _TimePickerPageState extends State<TimePickerPage> {
         context,
         minDateTime: DateTime.parse("2019-05-15 09:23:10"),
         maxDateTime: DateTime.parse("2020-06-03 21:11:00"),
-        initialDateTime: DateTime.parse(formatDate(_selectedDateTime, [yyyy, "-", mm, "-", "dd", " ", HH, ":", nn, ":", ss])),
-        dateFormat: "yy-MM-dd    HH:mm",
+        initialDateTime: DateTime.parse(formatDate(_selectedEndtDateTime, [yyyy, "-", mm, "-", "dd", " ", HH, ":", nn, ":", ss])),
+        dateFormat: "yyyy-MM-dd    HH:mm",
         locale: DateTimePickerLocale.en_us,
         pickerTheme: DateTimePickerTheme(
           showTitle: true,
@@ -60,12 +61,12 @@ class _TimePickerPageState extends State<TimePickerPage> {
         },
         onChange: (dateTime, List<int> index) {
           setState(() {
-            _selectedDateTime = dateTime;
+            _selectedEndtDateTime = dateTime;
           });
         },
         onConfirm: (dateTime, List<int> index) {
           setState(() {
-            _selectedDateTime = dateTime;
+            _selectedEndtDateTime = dateTime;
           });
         },
       );
@@ -92,8 +93,8 @@ class _TimePickerPageState extends State<TimePickerPage> {
                 },
                 child: Row(
                   children: <Widget>[
-                    Text(formatDate(_selectedDateTime,
-                        [yyyy, "-", mm, "-", dd, " ", HH, ":", nn])),
+                    Text(formatDate(_selectedStartDateTime,
+                        [yyyy, " - ", mm, " - ", dd, " ", HH, ":", nn])),
                     Icon(Icons.arrow_drop_down)
                   ],
                 ),
@@ -116,14 +117,34 @@ class _TimePickerPageState extends State<TimePickerPage> {
                 },
                 child: Row(
                   children: <Widget>[
-                    Text(formatDate(_selectedDateTime,
-                        [yyyy, "-", mm, "-", dd, " ", HH, ":", nn])),
+                    Text(formatDate(_selectedEndtDateTime,
+                        [yyyy, " - ", mm, " - ", dd, " ", HH, ":", nn])),
                     Icon(Icons.arrow_drop_down)
                   ],
                 ),
               )
             ],
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              FlatButton(
+                color: new Color.fromARGB(0xff, 0x1a, 0xb7, 0x6e),
+                textColor: Colors.white,
+                disabledColor: Colors.grey,
+                disabledTextColor: Colors.black,
+                padding: EdgeInsets.all(8.0),
+                splashColor: Colors.blueAccent,
+                onPressed: () {
+                  /*...*/
+                },
+                child: Text(
+                  "Create",
+                  style: TextStyle(fontSize: 20.0),
+                ),
+              )
+            ],
+          )
         ],
       ),
     );
