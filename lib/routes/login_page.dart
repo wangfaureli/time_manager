@@ -1,5 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'package:time_manager/api/userApi.dart';
+import 'package:time_manager/model/User.dart';
+import 'package:time_manager/model/Post.dart';
+import 'dart:developer';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -13,7 +21,7 @@ enum FormType {
 
 class _LoginState extends State<Login> {
 
-  final TextEditingController __userNameFilter = new TextEditingController();
+  final TextEditingController _userNameFilter = new TextEditingController();
   final TextEditingController _emailFilter = new TextEditingController();
   final TextEditingController _passwordFilter = new TextEditingController();
 
@@ -23,16 +31,16 @@ class _LoginState extends State<Login> {
   FormType _form = FormType.login; // our default setting is to login, and we should switch to creating an account when the user chooses to
 
   _LoginState() {
-    __userNameFilter.addListener(_userNameListen);
+    _userNameFilter.addListener(_userNameListen);
     _emailFilter.addListener(_emailListen);
     _passwordFilter.addListener(_passwordListen);
   }
 
   void _userNameListen() {
-    if (__userNameFilter.text.isEmpty) {
+    if (_userNameFilter.text.isEmpty) {
       _userName = "";
     } else {
-      _userName = __userNameFilter.text;
+      _userName = _userNameFilter.text;
     }
   }
 
@@ -84,20 +92,20 @@ class _LoginState extends State<Login> {
         children: <Widget>[
           new Container(
             child: new TextField(
-              controller: __userNameFilter,
+              controller: _userNameFilter,
               decoration: new InputDecoration(
-                labelText: 'User Name'
+                  labelText: 'User Name'
               ),
             ),
           ),
-          new Container(
+          (_form == FormType.register ? new Container(
             child: new TextField(
               controller: _emailFilter,
               decoration: new InputDecoration(
                   labelText: 'Email'
               ),
             ),
-          ),
+          ) : new Container()),
           new Container(
             child: new TextField(
               controller: _passwordFilter,
@@ -139,7 +147,7 @@ class _LoginState extends State<Login> {
             new FlatButton(
               child: new Text('Have an account? Click here to login.'),
               onPressed: _formChange,
-            )
+            ),
           ],
         ),
       );
@@ -148,13 +156,36 @@ class _LoginState extends State<Login> {
 
   // These functions can self contain any user auth logic required, they all have access to _email and _password
 
-  void _loginPressed () {
+  void _loginPressed () async {
     print('The user wants to login with $_userName and $_email and $_password');
+    var response = await UserApi.login(_userName, _password);
+    String user = response.body;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('userJson', user);
+//    print(prefs.getString('userJson'));
   }
 
-  void _createAccountPressed () {
+  void _createAccountPressed () async {
     print('The user wants to create an accoutn with $_userName and $_email and $_password');
+    var response = await UserApi.createUser(_userName, _password, _email);
+//    String user = response.body;
+//    SharedPreferences prefs = await SharedPreferences.getInstance();
+//    prefs.setString('userJson', jsonEncode(user));
+//    print(prefs.getString('userJson'));
 
+    Post post = Post.fromJson(jsonDecode(response.body));
+    print(post.title);
+    print("hehe");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('userJson', jsonEncode(post));
+    post = Post.fromJson(jsonDecode(prefs.getString('userJson')));
+    print(post.body);
+
+//    User user = User.fromJson(jsonDecode(response.body));
+//    print(user.username);
+//    SharedPreferences prefs = await SharedPreferences.getInstance();
+//    prefs.setString('userJson', jsonEncode(user));
+//    print(prefs.getString('userJson'));
   }
 
 }

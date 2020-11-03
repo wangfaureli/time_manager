@@ -10,7 +10,7 @@ class TimePickerPage extends StatefulWidget {
 
 class _TimePickerPageState extends State<TimePickerPage> {
   DateTime _selectedStartDateTime = DateTime.now();
-  DateTime _selectedEndtDateTime = DateTime.now();
+  DateTime _selectedEndDateTime = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class _TimePickerPageState extends State<TimePickerPage> {
         context,
         minDateTime: DateTime.parse("2019-05-15 09:23:10"),
         maxDateTime: DateTime.parse("2020-06-03 21:11:00"),
-        initialDateTime: DateTime.parse(formatDate(_selectedEndtDateTime, [yyyy, "-", mm, "-", "dd", " ", HH, ":", nn, ":", ss])),
+        initialDateTime: DateTime.parse(formatDate(_selectedEndDateTime, [yyyy, "-", mm, "-", "dd", " ", HH, ":", nn, ":", ss])),
         dateFormat: "yyyy-MM-dd    HH:mm",
         locale: DateTimePickerLocale.en_us,
         pickerTheme: DateTimePickerTheme(
@@ -61,12 +61,12 @@ class _TimePickerPageState extends State<TimePickerPage> {
         },
         onChange: (dateTime, List<int> index) {
           setState(() {
-            _selectedEndtDateTime = dateTime;
+            _selectedEndDateTime = dateTime;
           });
         },
         onConfirm: (dateTime, List<int> index) {
           setState(() {
-            _selectedEndtDateTime = dateTime;
+            _selectedEndDateTime = dateTime;
           });
         },
       );
@@ -117,7 +117,7 @@ class _TimePickerPageState extends State<TimePickerPage> {
                 },
                 child: Row(
                   children: <Widget>[
-                    Text(formatDate(_selectedEndtDateTime,
+                    Text(formatDate(_selectedEndDateTime,
                         [yyyy, " - ", mm, " - ", dd, " ", HH, ":", nn])),
                     Icon(Icons.arrow_drop_down)
                   ],
