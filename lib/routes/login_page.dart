@@ -80,6 +80,7 @@ class _LoginState extends State<Login> {
           children: <Widget>[
             _buildTextFields(),
             _buildButtons(),
+
           ],
         ),
       ),
@@ -168,6 +169,7 @@ class _LoginState extends State<Login> {
   void _createAccountPressed () async {
     print('The user wants to create an accoutn with $_userName and $_email and $_password');
     var response = await UserApi.createUser(_userName, _password, _email);
+    print(response.body);
 //    String user = response.body;
 //    SharedPreferences prefs = await SharedPreferences.getInstance();
 //    prefs.setString('userJson', jsonEncode(user));
@@ -175,7 +177,6 @@ class _LoginState extends State<Login> {
 
     Post post = Post.fromJson(jsonDecode(response.body));
     print(post.title);
-    print("hehe");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('userJson', jsonEncode(post));
     post = Post.fromJson(jsonDecode(prefs.getString('userJson')));
@@ -188,4 +189,27 @@ class _LoginState extends State<Login> {
 //    print(prefs.getString('userJson'));
   }
 
+  Widget _userLogin() {
+    if(this._userName.isEmpty) {
+      return new Container(
+        child: new Column(
+          children: <Widget>[
+            Expanded(
+              child: Text('Welcome Time Manager', textAlign: TextAlign.center),
+            ),
+          ],
+        ),
+      );
+    } else {
+      return new Container(
+        child: new Column(
+          children: <Widget>[
+            Expanded(
+              child: Text('Your are connected', textAlign: TextAlign.center,),
+            )
+          ],
+        ),
+      );
+    }
+  }
 }
