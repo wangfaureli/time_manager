@@ -80,7 +80,7 @@ class _LoginState extends State<Login> {
           children: <Widget>[
             _buildTextFields(),
             _buildButtons(),
-
+//            _userLogin(),
           ],
         ),
       ),
@@ -189,27 +189,27 @@ class _LoginState extends State<Login> {
 //    print(prefs.getString('userJson'));
   }
 
-  Widget _userLogin() {
-    if(this._userName.isEmpty) {
-      return new Container(
-        child: new Column(
-          children: <Widget>[
-            Expanded(
-              child: Text('Welcome Time Manager', textAlign: TextAlign.center),
-            ),
-          ],
-        ),
-      );
-    } else {
-      return new Container(
-        child: new Column(
-          children: <Widget>[
-            Expanded(
-              child: Text('Your are connected', textAlign: TextAlign.center,),
-            )
-          ],
-        ),
-      );
-    }
-  }
+//  Widget _userLogin() {
+//    if(_userName) {
+//      return new Container(
+//        child: new Column(
+//          children: <Widget>[
+//            Expanded(
+//              child: Text('Welcome Time Manager', textAlign: TextAlign.center),
+//            ),
+//          ],
+//        ),
+//      );
+//    } else {
+//      return new Container(
+//        child: new Column(
+//          children: <Widget>[
+//            Expanded(
+//              child: Text('Your are connected', textAlign: TextAlign.center,),
+//            )
+//          ],
+//        ),
+//      );
+//    }
+//  }
 }

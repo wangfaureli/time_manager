@@ -1,6 +1,10 @@
+import 'dart:convert';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
+import 'package:time_manager/api/workingTimeApi.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:time_manager/model/User.dart';
 
 class TimePickerPage extends StatefulWidget {
   TimePickerPage({Key key}) : super(key: key);
@@ -51,7 +55,7 @@ class _TimePickerPageState extends State<TimePickerPage> {
         maxDateTime: DateTime.parse("2020-06-03 21:11:00"),
         initialDateTime: DateTime.parse(formatDate(_selectedEndDateTime, [yyyy, "-", mm, "-", "dd", " ", HH, ":", nn, ":", ss])),
         dateFormat: "yyyy-MM-dd    HH:mm",
-        locale: DateTimePickerLocale.en_us,
+        locale: DateTimePickerLocale.fr,
         pickerTheme: DateTimePickerTheme(
           showTitle: true,
         ),
@@ -135,11 +139,9 @@ class _TimePickerPageState extends State<TimePickerPage> {
                 disabledTextColor: Colors.black,
                 padding: EdgeInsets.all(8.0),
                 splashColor: Colors.blueAccent,
-                onPressed: () {
-                  /*...*/
-                },
+                onPressed: _createWorkingTimePressed,
                 child: Text(
-                  "Create",
+                  "Save",
                   style: TextStyle(fontSize: 20.0),
                 ),
               )
@@ -148,6 +150,14 @@ class _TimePickerPageState extends State<TimePickerPage> {
         ],
       ),
     );
+  }
+
+  void _createWorkingTimePressed () async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    User user = User.fromJson(jsonDecode(prefs.getString('userJson')));
+    print(user.username);
+    var response = await WorkingTimeApi.createWorkingTime(user.id, _selectedStartDateTime, _selectedEndDateTime);
+    print(response.body);
   }
 }
 
